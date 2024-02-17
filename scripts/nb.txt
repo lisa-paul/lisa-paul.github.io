@@ -1,0 +1,5 @@
+this doesn't work from github pages
+	bc they allow only static html, whatever that means
+	maybe give it a try with the entire js within the html doc?
+
+	or else I have another perm prob or somethinh
