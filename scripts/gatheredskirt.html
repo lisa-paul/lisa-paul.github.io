@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- attribution: ChatGPT basic form snippet -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gathered Skirt Calculator</title>
+</head>
+<body>
+    <!-- <h2>Measurement Calculator</h2> -->
+    <p>intslrcutions go here</p>
+
+    <h3>Enter measurements in inches:</h3>
+    <!-- todo - make this less ugly - consider a table -->
+
+    <form id="measurementForm">
+        <label for="waistInput">Waist:</label>
+        <input type="number" id="waistInput" step="0.01" required><br><br>
+        
+        <label for="lengthInput">Length:</label>
+        <input type="number" id="lengthInput" step="0.01" required><br><br>
+        
+        <label for="finishedHemInput">Finished Hem:</label>
+        <input type="number" id="finishedHemInput" step="0.01" required><br><br>
+        
+        <label for="seamAllowanceInput">Seam Allowance:</label>
+        <input type="number" id="seamAllowanceInput" step="0.01" required><br><br>
+        
+        <label for="easeInput">Ease:</label>
+        <input type="number" id="easeInput" step="0.01" required><br><br>
+        
+        <label for="fullnessInput">Fullness:</label>
+        <input type="number" id="fullnessInput" step="0.01" required><br><br>
+
+        <hr>
+
+        <label for="rectanglePanelInput">Number of Rectangular Panels:</label>
+        <input type="number" id="panelInput" step="1" required><br><br>
+        <hr>
+
+
+        <button type="submit">Calculate</button>
+    </form>
+    
+    <div id="result"></div>
+    <div id="result2"></div>
+
+    <script>
+        function calculateMeasurements() {
+            var waist = parseFloat(document.getElementById("waistInput").value);
+            var length = parseFloat(document.getElementById("lengthInput").value);
+            var finishedHem = parseFloat(document.getElementById("finishedHemInput").value);
+            var seamAllowance = parseFloat(document.getElementById("seamAllowanceInput").value);
+            var ease = parseFloat(document.getElementById("easeInput").value);
+            var fullness = parseFloat(document.getElementById("fullnessInput").value);
+            var numRectangularPanels = parseInt(document.getElementById("panelInput").value);
+            
+            // Perform your calculations here
+            // For example:
+            var total = waist + length + finishedHem + seamAllowance + ease + fullness + numRectangularPanels;            
+            document.getElementById("result").innerText = "Sum of all numbers: " + total;
+
+
+
+
+            // // #1 bc geometry tesselating
+            var numTriangularPanels = numRectangularPanels - 1;
+            document.getElementById("result2").innerText = "Number of Triangular Panels: " + numTriangularPanels;
+
+
+
+
+
+
+        } // end of script within html
+        
+        document.getElementById("measurementForm").addEventListener("submit", function(event){
+            event.preventDefault(); // Prevent the default form submission
+            calculateMeasurements(); // Call your function to calculate measurements
+        });
+    </script>
+</body>
+</html>
