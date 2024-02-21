@@ -16,22 +16,22 @@
 
     <form id="measurementForm">
         <label for="waistInput">Waist:</label>
-        <input type="number" id="waistInput" step="0.01" required><br><br>
+        <input type="number" id="waistInput" step="0.001" required><br><br>
         
         <label for="lengthInput">Length:</label>
-        <input type="number" id="lengthInput" step="0.01" required><br><br>
+        <input type="number" id="lengthInput" step="0.001" required><br><br>
         
         <label for="finishedHemInput">Finished Hem:</label>
-        <input type="number" id="finishedHemInput" step="0.01" required><br><br>
+        <input type="number" id="finishedHemInput" step="0.001" required><br><br>
         
         <label for="seamAllowanceInput">Seam Allowance:</label>
-        <input type="number" id="seamAllowanceInput" step="0.01" required><br><br>
+        <input type="number" id="seamAllowanceInput" step="0.001" required><br><br>
         
         <label for="easeInput">Ease:</label>
-        <input type="number" id="easeInput" step="0.01" required><br><br>
+        <input type="number" id="easeInput" step="0.001" required><br><br>
         
         <label for="fullnessInput">Fullness:</label>
-        <input type="number" id="fullnessInput" step="0.01" required><br><br>
+        <input type="number" id="fullnessInput" step="0.001" required><br><br>
 
         <hr>
 
@@ -43,10 +43,32 @@
         <button type="submit">Calculate</button>
     </form>
     
-    <div id="result"></div>
+
     <div id="result2"></div>
 
+    <div id="num_triangle_p"></div>
+
+    <div id="skirt_w"></div>
+    <div id="waistband_l"></div>
+    <div id="panel_w"></div>
+    <div id="panel_l"></div>
+
+    <div id="panel_yardage_l"></div>
+    <div id="estimated_panel_y"></div>
+    <div id="triangle_w_a"></div>
+    <div id="triangle_w_b"></div>
+
+    <div id="triangle_e"></div>
+    <div id="triangle_yardage_l"></div>
+    <div id="estimated_triangle_y"></div>
+    <div id="finished_hem_c"></div>
+
+
+
+
     <script>
+    //TODO translate var names from snake to camel       
+
         function calculateMeasurements() {
             var waist = parseFloat(document.getElementById("waistInput").value);
             var length = parseFloat(document.getElementById("lengthInput").value);
@@ -59,26 +81,89 @@
             // Perform your calculations here
             // For example:
             var total = waist + length + finishedHem + seamAllowance + ease + fullness + numRectangularPanels;            
-            document.getElementById("result").innerText = "Sum of all numbers: " + total;
+            document.getElementById("result2").innerText = "Sum of all numbers: " + total;
 
 
 
-
-            // // #1 bc geometry tesselating
+            // "1" bc geometry tesselating
             var numTriangularPanels = numRectangularPanels - 1;
-            document.getElementById("result2").innerText = "Number of Triangular Panels: " + numTriangularPanels;
+            document.getElementById("num_triangle_p").innerText = "Number of Triangular Panels: " + numTriangularPanels;
+
+            var skirt_width = (waist + ease) * fullness;
+            document.getElementById("skirt_w").innerText = "Skirt Width: " + skirt_width;
 
 
 
 
 
+            // Note: Placket is one inch wide.
+            // therefore "1" here
+            var waistband_length = (waist + ease) + (seamAllowance * 2) + 1;
+            document.getElementById("waistband_l").innerText = "Waistband Length: " + waistband_length;
 
-        } // end of script within html
+
+            var  panel_width = ((skirt_width - numTriangularPanels) 
+                / numRectangularPanels) 
+                + (seamAllowance * 2);
+            document.getElementById("panel_w").innerText = "Panel Width: "  + panel_width;
+
+            var panel_length = length + seamAllowance + (finishedHem * 2);
+            document.getElementById("panel_l").innerText = "Panel Length: "  + panel_length;
+
+            var panel_yardage_length = panel_length * 3;
+            document.getElementById("panel_yardage_l").innerText = "Panel Yardage Length: " + panel_yardage_length;
+
+            var estimated_panel_yardage = panel_yardage_length / 3;
+            document.getElementById("estimated_panel_y").innerText = "Estimated Panel Yardage: "  + estimated_panel_yardage;
+
+            //TODO why is it "1"
+            var triangle_width_a = 1 + (seamAllowance * 2);
+            document.getElementById("triangle_w_a").innerText = "Triangle Width A: "  + triangle_width_a;
+
+            var triangle_width_b = (panel_width / 3) + (seamAllowance * 2);
+            document.getElementById("triangle_w_b").innerText = "Triangle Width B: "  + triangle_width_b;
+
+            var triangle_excess = (triangle_width_b - triangle_width_a) / 2;
+            document.getElementById("triangle_e").innerText = "Triangle Excess: "  + triangle_excess;
+
+            //TODO why is it "1"
+            //check the formula here!!!
+            var triangle_yardage_length = 
+                ( ((numTriangularPanels-1) / 2) * 
+                    (triangle_width_a + triangle_width_b) ) 
+                + triangle_width_b;
+            document.getElementById("triangle_yardage_l").innerText = "Triangle Yardage Length: "  + triangle_yardage_length;
+
+            //inches to yards
+            var estimated_triangle_yardage = triangle_yardage_length / 36;
+            document.getElementById("estimated_triangle_y").innerText = "Estimated Triangle Yardage: "  + estimated_triangle_yardage;
+
+            var finished_hem_circumference = 
+                ( (panel_width - (seamAllowance * 2)) * 
+                    numRectangularPanels ) 
+                + ( (triangle_width_b - (seamAllowance * 2))  * 
+                    numTriangularPanels );
+            document.getElementById("finished_hem_c").innerText = "Finished Hem Circumference: "  + finished_hem_circumference;
+
+            // # Piece List, also for outputting
+            // # no complex calculations here
+            // # Fabric A: 
+            //     # "Rectangular Panels " #PN #num rect panel 
+            //     # "Waistband"           #probably 1
+            //     # "Button Plackets"
+
+            // # Fabric B
+            //     # "Triangular Gores"    #TN #num tri panel
+
+
+
+        } // end of my function
         
         document.getElementById("measurementForm").addEventListener("submit", function(event){
             event.preventDefault(); // Prevent the default form submission
             calculateMeasurements(); // Call your function to calculate measurements
         });
+
     </script>
 </body>
 </html>
